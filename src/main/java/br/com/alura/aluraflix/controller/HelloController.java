@@ -11,7 +11,7 @@ public class HelloController {
 	@ResponseBody
 	public String hello() {
 		
-		return "Aluraflix";
+		return "Aluraflix 2";
 	}
 
 }
