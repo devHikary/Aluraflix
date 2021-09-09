@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,5 +46,11 @@ public class VideosController {
 		URI uri = uriBuilder.path("/videos/{id}").buildAndExpand(video.getId()).toUri();
 		
 		return ResponseEntity.created(uri).body(new VideoDto(video));
+	}
+	
+	@GetMapping("/{id}")
+	public VideoDto detalhar(@PathVariable Long id) {
+		Video video = videoRepository.getOne(id);
+		return new VideoDto(video);
 	}
 }
