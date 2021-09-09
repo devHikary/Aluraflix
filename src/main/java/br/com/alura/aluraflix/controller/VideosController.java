@@ -2,6 +2,7 @@ package br.com.alura.aluraflix.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -54,24 +55,34 @@ public class VideosController {
 	}
 	
 	@GetMapping("/{id}")
-	public VideoDto detalhar(@PathVariable Long id) {
-		Video video = videoRepository.getOne(id);
-		return new VideoDto(video);
+	public ResponseEntity<VideoDto> detalhar(@PathVariable Long id) {
+		Optional<Video> optional = videoRepository.findById(id);
+		if(optional.isPresent()) {
+			return ResponseEntity.ok(new VideoDto(optional.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<VideoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoVideoForm form){
-		Video video = form.atualizar(id, videoRepository);
-		
-		return ResponseEntity.ok(new VideoDto(video));
+		Optional<Video> optional = videoRepository.findById(id);
+		if(optional.isPresent()) {
+			Video video = form.atualizar(id, videoRepository);
+			return ResponseEntity.ok(new VideoDto(video));
+		}
+		return ResponseEntity.notFound().build();
+
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> remover(@PathVariable Long id){
-		videoRepository.deleteById(id);
-		
-		return ResponseEntity.ok().build();
+		Optional<Video> optional = videoRepository.findById(id);
+		if(optional.isPresent()) {
+			videoRepository.deleteById(id);		
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 }
