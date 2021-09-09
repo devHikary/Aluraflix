@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +43,7 @@ public class VideosController {
 	}
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<VideoDto> cadastrar(@RequestBody @Valid VideoForm form, UriComponentsBuilder uriBuilder) {
 		Video video = form.converter();
 		videoRepository.save(video);
@@ -63,5 +65,13 @@ public class VideosController {
 		Video video = form.atualizar(id, videoRepository);
 		
 		return ResponseEntity.ok(new VideoDto(video));
+	}
+	
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> remover(@PathVariable Long id){
+		videoRepository.deleteById(id);
+		
+		return ResponseEntity.ok().build();
 	}
 }
