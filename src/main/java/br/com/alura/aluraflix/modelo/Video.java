@@ -10,6 +10,10 @@ public class Video {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String titulo;
+	private String descricao;
+	private String url;
+	
 	public Long getId() {
 		return id;
 	}
@@ -40,17 +44,6 @@ public class Video {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
+	}	
 
-	private String titulo;
-	private String descricao;
-	private String url;
-	
-	public Video(String titulo, String descricao, String url) {
-		this.titulo = titulo;
-		this.descricao = descricao;
-		this.url = url;
-	}
-	
-	
 }

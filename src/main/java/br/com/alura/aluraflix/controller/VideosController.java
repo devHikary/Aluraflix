@@ -3,6 +3,7 @@ package br.com.alura.aluraflix.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,14 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alura.aluraflix.controller.dto.VideoDto;
 import br.com.alura.aluraflix.modelo.Video;
+import br.com.alura.aluraflix.repository.VideoRepository;
 
 @RestController
 public class VideosController {
 	
-	@RequestMapping("/video")
+	@Autowired
+	private VideoRepository videoRepository;
+	
+	@RequestMapping("/videos")
 	public List<VideoDto> lista() {
-		Video video = new Video("video 1", "descricao", "url");
+		List<Video> videos = videoRepository.findAll();
 		
-		return VideoDto.converter(Arrays.asList(video, video));
+		return VideoDto.converter(videos);
 	}
 }
