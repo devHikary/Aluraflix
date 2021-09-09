@@ -20,9 +20,13 @@ public class VideosController {
 	private VideoRepository videoRepository;
 	
 	@RequestMapping("/videos")
-	public List<VideoDto> lista() {
-		List<Video> videos = videoRepository.findAll();
-		
-		return VideoDto.converter(videos);
+	public List<VideoDto> lista(String titulo) {
+		if(titulo == null) {
+			List<Video> videos = videoRepository.findAll();
+			return VideoDto.converter(videos);
+		} else {
+			List<Video> videos = videoRepository.findByTitulo(titulo);
+			return VideoDto.converter(videos);
+		}
 	}
 }
