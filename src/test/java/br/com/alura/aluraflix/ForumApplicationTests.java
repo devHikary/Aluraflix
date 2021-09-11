@@ -1,4 +1,4 @@
-package br.com.alura.forum;
+package br.com.alura.aluraflix;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
