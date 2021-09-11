@@ -14,6 +14,17 @@ public class AtualizacaoVideoForm {
 	
 	@NotNull @NotEmpty @Length(min = 3)
 	private String descricao;
+	
+	@NotNull @NotEmpty @Length(min = 3)
+	private String url;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public String getTitulo() {
 		return titulo;
@@ -36,6 +47,7 @@ public class AtualizacaoVideoForm {
 		
 		video.setTitulo(this.titulo);
 		video.setDescricao(this.descricao);
+		video.setUrl(this.url);
 		
 		return video;
 	}
