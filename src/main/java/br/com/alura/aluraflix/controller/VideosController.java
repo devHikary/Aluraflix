@@ -23,6 +23,7 @@ import br.com.alura.aluraflix.controller.dto.VideoDto;
 import br.com.alura.aluraflix.controller.form.AtualizacaoVideoForm;
 import br.com.alura.aluraflix.controller.form.VideoForm;
 import br.com.alura.aluraflix.modelo.Video;
+import br.com.alura.aluraflix.repository.CategoriaRepository;
 import br.com.alura.aluraflix.repository.VideoRepository;
 
 @RestController
@@ -31,6 +32,9 @@ public class VideosController {
 	
 	@Autowired
 	private VideoRepository videoRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 	
 	@GetMapping
 	public List<VideoDto> lista(String titulo) {
@@ -46,7 +50,7 @@ public class VideosController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<VideoDto> cadastrar(@RequestBody @Valid VideoForm form, UriComponentsBuilder uriBuilder) {
-		Video video = form.converter();
+		Video video = form.converter(categoriaRepository);
 		videoRepository.save(video);
 		
 		URI uri = uriBuilder.path("/videos/{id}").buildAndExpand(video.getId()).toUri();
@@ -68,7 +72,7 @@ public class VideosController {
 	public ResponseEntity<VideoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoVideoForm form){
 		Optional<Video> optional = videoRepository.findById(id);
 		if(optional.isPresent()) {
-			Video video = form.atualizar(id, videoRepository);
+			Video video = form.atualizar(id, videoRepository, categoriaRepository);
 			return ResponseEntity.ok(new VideoDto(video));
 		}
 		return ResponseEntity.notFound().build();

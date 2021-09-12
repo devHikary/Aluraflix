@@ -5,7 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.alura.aluraflix.modelo.Categoria;
 import br.com.alura.aluraflix.modelo.Video;
+import br.com.alura.aluraflix.repository.CategoriaRepository;
 
 public class VideoForm {
 
@@ -17,6 +19,9 @@ public class VideoForm {
 	
 	@NotNull @NotEmpty @Length(min = 3)
 	private String url;
+	
+	@NotNull @NotEmpty 
+	private String nomeCategoria;
 	
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
@@ -37,8 +42,17 @@ public class VideoForm {
 		return url;
 	}
 	
-	public Video converter() {
-		return new Video(titulo, descricao, url);
+	public String getNomeCategoria() {
+		return nomeCategoria;
+	}
+	public void setNomeCategoria(String nomeCategoria) {
+		this.nomeCategoria = nomeCategoria;
+	}
+	
+	public Video converter(CategoriaRepository categoriaRepository) {
+		Categoria categoria = categoriaRepository.findByNome(nomeCategoria);
+
+		return new Video(titulo, descricao, url, categoria);
 	}
 	
 	
